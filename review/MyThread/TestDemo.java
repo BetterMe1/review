@@ -39,7 +39,7 @@ class MyThread2 implements Runnable{
 方式三:附带返回值
  */
 class MyThread3 implements Callable{
-    private int ticket = 100;
+    private int ticket = 1000;
     @Override
     public Object call() throws Exception {
         while(ticket>0){
@@ -71,8 +71,14 @@ public class TestDemo{
         MyThread3 myThread3 = new MyThread3();//实现了Callable接口
         //产生FutureTask对象
         FutureTask<String> futureTask = new FutureTask<>(myThread3);
-        Thread thread = new Thread(futureTask);
+        FutureTask<String> futureTask1 = new FutureTask<>(myThread3);
+        FutureTask<String> futureTask3 = new FutureTask<>(myThread3);
+        Thread thread = new Thread(futureTask,"线程1");
+        Thread thread1 = new Thread(futureTask1,"线程2");
+        Thread thread2= new Thread(futureTask3,"线程3");
+        thread2.start();
         thread.start();
+        thread1.start();
         try {
             System.out.println(futureTask.get());
         } catch (InterruptedException e) {
@@ -80,6 +86,5 @@ public class TestDemo{
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
     }
 }
